@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var currentValue = Double.random(in: 1...100)
-    @State private var targetValue = Int.random(in: 1...100)
+    @State private var currentValue = Double.random(in: 0...100)
+    @State private var targetValue = Int.random(in: 0...100)
     @State private var score = 0
+    @State private var opacity = 1.0
     
     @State private var showAlert: Bool = false
-
     
     var body: some View {
         VStack {
@@ -22,7 +22,9 @@ struct ContentView: View {
                     .lineLimit(1)
                 Text("\(targetValue)")
             }
-            CustomSlider(currentValue: $currentValue)
+            CustomSlider(currentValue: $currentValue, opacity: $opacity, changeValue: {
+                opacity = Double(computeScore()) / 100.0
+            })
                 .padding()
             Button("Проверь меня") {
                 score = computeScore()
@@ -41,7 +43,6 @@ struct ContentView: View {
     private func computeScore() -> Int {
         let difference = abs(targetValue - lround(currentValue))
         return 100 - difference
-        
     }
 
 }
